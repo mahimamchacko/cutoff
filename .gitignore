@@ -1,6 +1,4 @@
-.vs/cutoff/xs/UserPrefs.xml
-cutoff/obj/Debug/net7.0/project.razor.json
-.vs/cutoff/xs/project-cache/cutoff-Debug.json
+.vs/cutoff/
 cutoff/bin/
 cutoff/obj/
 .DS_Store
