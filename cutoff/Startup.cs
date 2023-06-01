@@ -18,7 +18,7 @@ public class Startup
 
         services.AddRazorPages();
 
-		services.AddScoped<DataContext>();
+        services.AddScoped<DataAccessor>();
 	}
 
 	public void Configure(WebApplication app, IWebHostEnvironment env)
