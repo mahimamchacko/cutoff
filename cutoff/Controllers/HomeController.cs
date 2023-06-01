@@ -1,16 +1,19 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using cutoff.Models;
+using cutoff.Helpers;
 
 namespace cutoff.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly DataAccessor _dataAccessor;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, DataAccessor dataAccessor)
     {
         _logger = logger;
+        _dataAccessor = dataAccessor;
     }
 
     public IActionResult Index()
