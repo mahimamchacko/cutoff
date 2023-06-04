@@ -9,99 +9,99 @@ public class DataAccessor : IDataAccessor
     {
     }
 
-    public List<Episode> GetEpisodes()
+    public List<EpisodeDTO> GetEpisodes()
     {
         using (var context = new DataContext())
         {
-            List<Episode> results = new List<Episode>(); ;
+            List<EpisodeDTO> results = new List<EpisodeDTO>(); ;
             var episodes = context.Episodes.AsQueryable();
             results.AddRange(episodes);
             return results;
         }
     }
 
-    public List<Genre> GetGenres()
+    public List<GenreDTO> GetGenres()
     {
         using (var context = new DataContext())
         {
-            List<Genre> results = new List<Genre>(); ;
+            List<GenreDTO> results = new List<GenreDTO>(); ;
             var genres = context.Genres.AsQueryable();
             results.AddRange(genres);
             return results;
         }
     }
 
-    public List<Network> GetNetworks()
+    public List<NetworkDTO> GetNetworks()
     {
         using (var context = new DataContext())
         {
-            List<Network> results = new List<Network>(); ;
+            List<NetworkDTO> results = new List<NetworkDTO>(); ;
             var networks = context.Networks.AsQueryable();
             results.AddRange(networks);
             return results;
         }
     }
 
-    public List<Season> GetSeasons()
+    public List<SeasonDTO> GetSeasons()
     {
         using (var context = new DataContext())
         {
-            List<Season> results = new List<Season>(); ;
+            List<SeasonDTO> results = new List<SeasonDTO>(); ;
             var seasons = context.Seasons.AsQueryable();
             results.AddRange(seasons);
             return results;
         }
     }
 
-    public List<Show> GetShows()
+    public List<ShowDTO> GetShows()
     {
         using (var context = new DataContext())
         {
-            List<Show> results = new List<Show>(); ;
+            List<ShowDTO> results = new List<ShowDTO>(); ;
             var shows = context.Shows.AsQueryable();
             results.AddRange(shows);
             return results;
         }
     }
 
-    public List<ShowEpisode> GetShowEpisodes()
+    public List<ShowEpisodeDTO> GetShowEpisodes()
     {
         using (var context = new DataContext())
         {
-            List<ShowEpisode> results = new List<ShowEpisode>(); ;
+            List<ShowEpisodeDTO> results = new List<ShowEpisodeDTO>(); ;
             var showEpisodes = context.ShowEpisodes.AsQueryable();
             results.AddRange(showEpisodes);
             return results;
         }
     }
 
-    public List<ShowGenre> GetShowGenres()
+    public List<ShowGenreDTO> GetShowGenres()
     {
         using (var context = new DataContext())
         {
-            List<ShowGenre> results = new List<ShowGenre>(); ;
+            List<ShowGenreDTO> results = new List<ShowGenreDTO>(); ;
             var showGenres = context.ShowGenres.AsQueryable();
             results.AddRange(showGenres);
             return results;
         }
     }
 
-    public List<ShowNetwork> GetShowNetworks()
+    public List<ShowNetworkDTO> GetShowNetworks()
     {
         using (var context = new DataContext())
         {
-            List<ShowNetwork> results = new List<ShowNetwork>(); ;
+            List<ShowNetworkDTO> results = new List<ShowNetworkDTO>(); ;
             var showNetworks = context.ShowNetworks.AsQueryable();
             results.AddRange(showNetworks);
             return results;
         }
     }
 
-    public List<ShowSeason> GetShowSeasons()
+    public List<ShowSeasonDTO> GetShowSeasons()
     {
         using (var context = new DataContext())
         {
-            List<ShowSeason> results = new List<ShowSeason>(); ;
+            List<ShowSeasonDTO> results = new List<ShowSeasonDTO>(); ;
             var showSeasons = context.ShowSeasons.AsQueryable();
             results.AddRange(showSeasons);
             return results;

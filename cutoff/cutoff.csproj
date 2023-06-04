@@ -18,10 +18,18 @@
   <ItemGroup>
     <None Remove="Helpers\" />
     <None Remove="Database\" />
+    <None Remove="Views\Show\" />
+    <None Remove="Models\DTOs\" />
+    <None Remove="Models\VMs\" />
+    <None Remove="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
     <Folder Include="Database\" />
+    <Folder Include="Views\Show\" />
+    <Folder Include="Models\DTOs\" />
+    <Folder Include="Models\VMs\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Database\cutoff.db">
