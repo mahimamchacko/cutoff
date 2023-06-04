@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace cutoff.Models;
 
-public partial class Season
+public partial class EpisodeDTO
 {
-    public long SeasonNumber { get; set; }
+    public long EpisodeNumber { get; set; }
 }

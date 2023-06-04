@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace cutoff.Models;
 
-public partial class ShowNetwork
+public partial class NetworkDTO
 {
-    public long ShowId { get; set; }
-
     public long NetworkId { get; set; }
+
+    public string NetworkName { get; set; } = null!;
 }

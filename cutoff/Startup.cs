@@ -1,5 +1,6 @@
 ﻿using System;
 using cutoff.Helpers;
+using cutoff.Services;
 
 namespace cutoff;
 
@@ -19,6 +20,7 @@ public class Startup
         services.AddRazorPages();
 
         services.AddScoped<DataAccessor>();
+        services.AddScoped<ShowService>();
 	}
 
 	public void Configure(WebApplication app, IWebHostEnvironment env)

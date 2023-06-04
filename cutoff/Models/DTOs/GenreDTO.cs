@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace cutoff.Models;
 
-public partial class Genre
+public partial class GenreDTO
 {
     public long GenreId { get; set; }
 
