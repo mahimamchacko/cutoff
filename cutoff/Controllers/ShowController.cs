@@ -21,8 +21,14 @@ public class ShowController : Controller
 
     public IActionResult Index()
     {
-        var model = new ShowVM(_dataAccessor, _showService);
+        var model = new ShowGridVM(_dataAccessor, _showService);
         return View(model);
     }
+
+    public IActionResult ShowModal(int showId)
+    {
+        var model = new ShowMovalVM(_dataAccessor, _showService, showId);
+        return View("ShowModalPartial", model);
+    } 
 }
 

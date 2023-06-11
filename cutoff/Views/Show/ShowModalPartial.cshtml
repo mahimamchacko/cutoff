@@ -1,0 +1,70 @@
+﻿@model cutoff.Models.ShowMovalVM
+
+@{
+    Layout = null;
+    var show = Model.Show;
+} 
+
+<div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">@show.ShowName</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+            <div id="networks" class="mb-2">
+                @foreach (var network in show.Networks)
+                {
+                    <span id="@network.NetworkId" class="badge bg-primary">@network.NetworkName</span>
+                }
+            </div>
+            <div class="accordion">
+                @foreach (var season in show.Seasons)
+                {
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="@string.Format("#season{0}", season.SeasonNumber)" aria-expanded="true" aria-controls="@string.Format("season{0}", season.SeasonNumber)">
+                                Season @season.SeasonNumber
+                            </button>
+                        </h2>
+                        <div id="@string.Format("season{0}", season.SeasonNumber)" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                @{
+                                    var seasonEpisodes = show.Episodes.Where(e => e.SeasonNumber == season.SeasonNumber);
+                                }
+                                @if (seasonEpisodes.Count() > 0)
+                                {
+                                    var episode1 = seasonEpisodes.First();
+                                    <div id="@string.Format("season{0}Episode{1}", season.SeasonNumber, episode1.EpisodeNumber)" class="d-flex justify-content-between py-2">
+                                        <div class="">
+                                            <h6><strong>Episode @episode1.EpisodeNumber:</strong> @episode1.EpisodeName</h6>
+                                            <p class="m-0 text-muted" style="font-size: 0.75rem;">@episode1.EpisodeDate.ToString("dddd MMMM dd, yyyy")</p>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <input type="checkbox" id="@string.Format("season{0}Episode{1}Checkbox", season.SeasonNumber, episode1.EpisodeNumber)" class="btn-check" autocomplete="off" />
+                                            <label class="btn btn-small btn-outline-primary" for="@string.Format("season{0}Episode{1}Checkbox", season.SeasonNumber, episode1.EpisodeNumber)">_</label>
+                                        </div>
+                                    </div>
+                                    @foreach (var episode in seasonEpisodes.Skip(1))
+                                    {
+                                        <div id="@string.Format("season{0}Episode{1}", season.SeasonNumber, episode.EpisodeNumber)" class="d-flex justify-content-between py-2 border-top">
+                                            <div class="">
+                                                <h6><strong>Episode @episode.EpisodeNumber:</strong> @episode.EpisodeName</h6>
+                                                <p class="m-0 text-muted" style="font-size: 0.75rem;">@episode.EpisodeDate.ToString("dddd MMMM dd, yyyy")</p>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <input type="checkbox" id="@string.Format("season{0}Episode{1}Checkbox", season.SeasonNumber, episode.EpisodeNumber)" class="btn-check" autocomplete="off" />
+                                                <label class="btn btn-small btn-outline-primary" for="@string.Format("season{0}Episode{1}Checkbox", season.SeasonNumber, episode.EpisodeNumber)">_</label>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

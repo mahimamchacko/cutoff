@@ -12,4 +12,6 @@ public partial class ShowEpisodeDTO
     public long EpisodeNumber { get; set; }
 
     public string? EpisodeName { get; set; }
+
+    public DateTime EpisodeDate { get; set; }
 }

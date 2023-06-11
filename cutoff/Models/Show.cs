@@ -8,8 +8,10 @@ public class Show
 
     public string ShowName { get; set; } = null!;
 
-    public string ShowDescription { get; set; } = null!;
-
     public List<NetworkDTO>? Networks { get; set; }
+
+    public List<ShowSeasonDTO>? Seasons { get; set; }
+
+    public List<ShowEpisodeDTO>? Episodes { get; set; }
 }
 
