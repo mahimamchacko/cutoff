@@ -22,5 +22,9 @@ public interface IDataAccessor
     public List<ShowNetworkDTO> GetShowNetworks();
 
     public List<ShowSeasonDTO> GetShowSeasons();
+
+    public List<UserDTO> GetUsers();
+
+    public void RegisterUser(UserDTO user);
 }
 

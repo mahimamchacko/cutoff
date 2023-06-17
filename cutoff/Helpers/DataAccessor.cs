@@ -107,5 +107,25 @@ public class DataAccessor : IDataAccessor
             return results;
         }
     }
+
+    public List<UserDTO> GetUsers()
+    {
+        using (var context = new DataContext())
+        {
+            List<UserDTO> results = new List<UserDTO>(); ;
+            var users = context.Users.AsQueryable();
+            results.AddRange(users);
+            return results;
+        }
+    }
+
+    public void RegisterUser(UserDTO user)
+    {
+        using (var context = new DataContext())
+        {
+            context.Add(user);
+            context.SaveChanges();
+        }
+    }
 }
 
