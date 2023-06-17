@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using cutoff.Models;
 using cutoff.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace cutoff.Controllers;
 
@@ -18,12 +19,16 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        if (HttpContext.Session.GetString("UserName") != null)
+            return View();
+        return RedirectToAction("Login", "Authorization");
     }
 
     public IActionResult Privacy()
     {
-        return View();
+        if (HttpContext.Session.GetString("UserName") != null)
+            return View();
+        return RedirectToAction("Login", "Authorization");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

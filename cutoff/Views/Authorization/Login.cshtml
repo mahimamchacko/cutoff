@@ -1,0 +1,54 @@
+﻿@model cutoff.Models.UserLoginVM
+@{
+    ViewData["Title"] = "Cutoff - Login";
+}
+
+<form class="border rounded mx-auto mb-3 p-3 col-sm-8 col-md-6 col-lg-4 needs-validation" action="@Url.Action("LoginUser", "Authorization")" method="post" novalidate>
+    <h1>Cutoff</h1>
+    <div class="input-group mb-3 position-relative has-validation">
+        <span class="input-group-text" id="usernamePrepend">&#64;</span>
+        <input type="text" class="form-control" id="username" minlength="6" maxlength="30" aria-describedby="usernamePrepend" placeholder="Username" asp-for="UserName" required>
+        <div class="valid-feedback">
+            Great!
+        </div>
+        <div class="invalid-feedback">
+            Please enter your username.
+        </div>
+    </div>
+    <div class="mb-3 position-relative">
+        <input type="password" id="password" class="form-control" minlength="10" maxlength="60" placeholder="Password" asp-for="UserPassword" required>
+        <div class="valid-feedback">
+            Great!
+        </div>
+        <div class="invalid-feedback">
+            Please enter your password.
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+
+<div class="border rounded mx-auto p-3 col-sm-8 col-md-6 col-lg-4">
+    <a asp-area="" asp-controller="Authorization" asp-action="Register">
+        <button class="btn btn-primary">Register</button>
+    </a>
+</div>
+
+<script>
+    $(function () {
+        'use strict'
+
+        var forms = document.querySelectorAll('.needs-validation');
+
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            });
+    });
+</script>

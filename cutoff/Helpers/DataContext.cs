@@ -34,6 +34,8 @@ public partial class DataContext : DbContext
 
     public virtual DbSet<ShowSeasonDTO> ShowSeasons { get; set; }
 
+    public virtual DbSet<UserDTO> Users { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlite("Data Source=./Database/cutoff.db;");
 
@@ -154,6 +156,19 @@ public partial class DataContext : DbContext
                 .HasColumnType("INT")
                 .HasColumnName("ShowID");
             entity.Property(e => e.SeasonNumber).HasColumnType("INT");
+        });
+
+        modelBuilder.Entity<UserDTO>(entity =>
+        {
+            entity.HasKey(e => e.UserName);
+
+            entity.ToTable("User");
+
+            entity.Property(e => e.UserName).HasColumnType("VARCHAR(30)");
+            entity.Property(e => e.UserFirst).HasColumnType("VARCHAR(50)");
+            entity.Property(e => e.UserLast).HasColumnType("VARCHAR(50)");
+            entity.Property(e => e.UserEmail).HasColumnType("VARCHAR(65)");
+            entity.Property(e => e.UserPassword).HasColumnType("VARCHAR(60)");
         });
 
         OnModelCreatingPartial(modelBuilder);

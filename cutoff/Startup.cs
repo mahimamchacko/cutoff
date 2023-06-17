@@ -1,6 +1,6 @@
-﻿using System;
-using cutoff.Helpers;
+﻿using cutoff.Helpers;
 using cutoff.Services;
+using Microsoft.AspNetCore.Session;
 
 namespace cutoff;
 
@@ -19,6 +19,13 @@ public class Startup
 
         services.AddRazorPages();
 
+        services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(30);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
+
         services.AddScoped<DataAccessor>();
         services.AddScoped<ShowService>();
 	}
@@ -34,13 +41,13 @@ public class Startup
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
-        app.UseRouting();
+        app.UseSession();
 
-        app.UseAuthorization();
+        app.UseRouting();
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}"
+            pattern: "{controller=Authorization}/{action=Login}/{id?}"
         );
 
         app.Run();
