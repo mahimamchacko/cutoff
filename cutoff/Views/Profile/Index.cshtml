@@ -1,0 +1,32 @@
+﻿@model cutoff.Models.UserVM
+@{
+    ViewData["Title"] = "Cutoff - Profile";
+}
+
+<form class="border rounded mx-auto mb-3 p-3 col-sm-12 col-md-8 col-lg-6 needs-validation" action="@Url.Action("CreateUser", "Authorization")" method="post" novalidate>
+    <h1>Cutoff</h1>
+    <div class="row">
+        <div class="col-md-6 mb-3 position-relative">
+            <input type="text" class="form-control" id="firstName" maxlength="50" value="@Model.UserFirst" asp-for="UserFirst" readonly>
+        </div>
+        <div class="col-md-6 mb-3 position-relative">
+            <input type="text" class="form-control" id="lastName" maxlength="50" value="@Model.UserLast" asp-for="UserLast" readonly>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mb-3 position-relative">
+            <input type="email" class="form-control" id="email" maxlength="65" value="@Model.UserEmail" asp-for="UserEmail" readonly>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3 position-relative">
+            <div class="input-group has-validation">
+                <span class="input-group-text" id="usernamePrepend">&#64;</span>
+                <input type="text" class="form-control" id="username" minlength="6" maxlength="30" aria-describedby="usernamePrepend" value="@Model.UserName" asp-for="UserName" readonly>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3 position-relative">
+            <input type="password" id="password" class="form-control" minlength="10" maxlength="60" value="@Model.UserPassword" asp-for="UserPassword" readonly>
+        </div>
+    </div>
+</form>

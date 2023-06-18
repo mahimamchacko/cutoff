@@ -47,7 +47,7 @@ public class Startup
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Authorization}/{action=Login}/{id?}"
+            pattern: "{controller=Authorization}/{action=Index}/{id?}"
         );
 
         app.Run();
