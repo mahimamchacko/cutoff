@@ -24,6 +24,7 @@
     <None Remove="Models\VMs\" />
     <None Remove="Services\" />
     <None Remove="Views\Authorization\" />
+    <None Remove="Views\Profile\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
@@ -33,6 +34,7 @@
     <Folder Include="Models\VMs\" />
     <Folder Include="Services\" />
     <Folder Include="Views\Authorization\" />
+    <Folder Include="Views\Profile\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Database\cutoff.db">

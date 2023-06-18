@@ -14,13 +14,17 @@ public class AuthorizationController : Controller
         _dataAccessor = dataAccessor;
     }
 
-    public IActionResult Login()
+    public IActionResult Index()
     {
+        if (HttpContext.Session.GetString("UserName") != null)
+            return RedirectToAction("Index", "Home");
         return View();
     }
 
     public IActionResult Register()
     {
+        if (HttpContext.Session.GetString("UserName") != null)
+            return RedirectToAction("Index", "Home");
         return View();
     }
 
@@ -50,7 +54,7 @@ public class AuthorizationController : Controller
 
         _dataAccessor.RegisterUser(userDTO);
 
-        return View("Login");
+        return View("Index");
     }
 
     [HttpPost]
@@ -62,7 +66,14 @@ public class AuthorizationController : Controller
             HttpContext.Session.SetString("UserName", user.UserName);
             return RedirectToAction("Index", "Home");
         }
-        return View("Login", user);
+        return View("Index", user);
+    }
+
+    [HttpPost]
+    public IActionResult LogoutUser(UserLoginVM user)
+    {
+        HttpContext.Session.Remove("UserName");
+        return View("Index", user);
     }
 }
 

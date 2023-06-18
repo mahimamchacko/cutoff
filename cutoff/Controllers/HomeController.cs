@@ -21,14 +21,14 @@ public class HomeController : Controller
     {
         if (HttpContext.Session.GetString("UserName") != null)
             return View();
-        return RedirectToAction("Login", "Authorization");
+        return RedirectToAction("Index", "Authorization");
     }
 
     public IActionResult Privacy()
     {
         if (HttpContext.Session.GetString("UserName") != null)
             return View();
-        return RedirectToAction("Login", "Authorization");
+        return RedirectToAction("Index", "Authorization");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

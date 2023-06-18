@@ -25,7 +25,7 @@ public class ShowController : Controller
             var model = new ShowGridVM(_dataAccessor, _showService);
             return View(model);
         }
-        return RedirectToAction("Login", "Authorization");
+        return RedirectToAction("Index", "Authorization");
     }
 
     public IActionResult ShowModal(int showId)
