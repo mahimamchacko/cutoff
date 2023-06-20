@@ -1,0 +1,83 @@
+﻿@model cutoff.Models.ShowModalVM
+
+@{
+    Layout = null;
+    var show = Model.Show;
+} 
+
+<div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">@show.ShowName</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+            <div id="networks" class="mb-2">
+                @foreach (var network in show.Networks!)
+                {
+                    <span id="@network.NetworkId" class="badge bg-primary fs-6">@network.NetworkName</span>
+                }
+            </div>
+            <div class="accordion">
+                @foreach (var season in show.Seasons!)
+                {
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="@string.Format("#season{0}", season.SeasonNumber)" aria-expanded="true" aria-controls="@string.Format("season{0}", season.SeasonNumber)">
+                                Season @season.SeasonNumber
+                            </button>
+                        </h2>
+                        <div id="@string.Format("season{0}", season.SeasonNumber)" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                @{
+                                    var seasonEpisodes = show.Episodes!.Where(e => e.SeasonNumber == season.SeasonNumber);
+                                }
+                                @foreach (var episode in seasonEpisodes)
+                                {
+                                    <div id="@string.Format("season{0}Episode{1}", season.SeasonNumber, episode.EpisodeNumber)" class="d-flex justify-content-between py-2">
+                                        <div>
+                                            <h6><strong>Episode @episode.EpisodeNumber:</strong> @episode.EpisodeName</h6>
+                                            <p class="m-0 text-muted" style="font-size: 0.75rem;">@episode.EpisodeDate.ToString("dddd MMMM dd, yyyy")</p>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <input type="checkbox" id="@string.Format("season{0}Episode{1}Watch", season.SeasonNumber, episode.EpisodeNumber)" class="btn-check" checked="@episode.UserWatch" autocomplete="off" />
+                                            <label id="@string.Format("season{0}Episode{1}WatchLabel", season.SeasonNumber, episode.EpisodeNumber)" class="btn btn-small btn-outline-primary btn-watch" for="@string.Format("season{0}Episode{1}Watch", season.SeasonNumber, episode.EpisodeNumber)">&#x2713</label>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".btn-watch").click(function () {
+        var showId = @show.ShowId;
+        var text = String(this.id).split(/(\d+)/);
+        var seasonNumber = text[1];
+        var episodeNumber = text[3];
+        var data = { "showId": showId, "seasonNumber": seasonNumber, "episodeNumber": episodeNumber };
+        var link = '@Url.Action("ToggleShowEpisode", "Show")';
+        $.ajax({
+            type: "POST",
+            url: link,
+            data: data,
+        });
+    });
+</script>
+
+<style>
+    .accordion-body > div {
+        border-top: solid;
+        border-width: thin;
+        border-color: #dee2e6;
+    }
+
+    .accordion-body div:first-child {
+        border-top: none;
+    }
+</style>

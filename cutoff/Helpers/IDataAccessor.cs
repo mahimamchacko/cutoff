@@ -5,22 +5,34 @@ namespace cutoff.Helpers;
 
 public interface IDataAccessor
 {
-    public List<Episode> GetEpisodes();
+    public List<EpisodeDTO> GetEpisodes();
 
-    public List<Genre> GetGenres();
+    public List<GenreDTO> GetGenres();
 
-    public List<Network> GetNetworks();
+    public List<NetworkDTO> GetNetworks();
 
-    public List<Season> GetSeasons();
+    public List<SeasonDTO> GetSeasons();
 
-    public List<Show> GetShows();
+    public List<ShowDTO> GetShows();
 
-    public List<ShowEpisode> GetShowEpisodes();
+    public List<ShowEpisodeDTO> GetShowEpisodes();
 
-    public List<ShowGenre> GetShowGenres();
+    public List<ShowGenreDTO> GetShowGenres();
 
-    public List<ShowNetwork> GetShowNetworks();
+    public List<ShowNetworkDTO> GetShowNetworks();
 
-    public List<ShowSeason> GetShowSeasons();
+    public List<ShowSeasonDTO> GetShowSeasons();
+
+    public List<UserDTO> GetUsers();
+
+    public List<UserShowDTO> GetUserShows();
+
+    public List<UserShowEpisodeDTO> GetUserShowEpisodes();
+
+    public void RegisterUser(UserDTO user);
+
+    public void ToggleShow(UserShowDTO userShow);
+
+    public void ToggleShowEpisode(UserShowEpisodeDTO userShowEpisode);
 }
 

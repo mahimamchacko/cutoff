@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace cutoff.Models;
 
-public partial class Network
+public partial class NetworkDTO
 {
     public long NetworkId { get; set; }
 

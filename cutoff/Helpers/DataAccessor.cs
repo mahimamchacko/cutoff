@@ -9,102 +9,174 @@ public class DataAccessor : IDataAccessor
     {
     }
 
-    public List<Episode> GetEpisodes()
+    public List<EpisodeDTO> GetEpisodes()
     {
         using (var context = new DataContext())
         {
-            List<Episode> results = new List<Episode>(); ;
+            List<EpisodeDTO> results = new List<EpisodeDTO>(); ;
             var episodes = context.Episodes.AsQueryable();
             results.AddRange(episodes);
             return results;
         }
     }
 
-    public List<Genre> GetGenres()
+    public List<GenreDTO> GetGenres()
     {
         using (var context = new DataContext())
         {
-            List<Genre> results = new List<Genre>(); ;
+            List<GenreDTO> results = new List<GenreDTO>(); ;
             var genres = context.Genres.AsQueryable();
             results.AddRange(genres);
             return results;
         }
     }
 
-    public List<Network> GetNetworks()
+    public List<NetworkDTO> GetNetworks()
     {
         using (var context = new DataContext())
         {
-            List<Network> results = new List<Network>(); ;
+            List<NetworkDTO> results = new List<NetworkDTO>(); ;
             var networks = context.Networks.AsQueryable();
             results.AddRange(networks);
             return results;
         }
     }
 
-    public List<Season> GetSeasons()
+    public List<SeasonDTO> GetSeasons()
     {
         using (var context = new DataContext())
         {
-            List<Season> results = new List<Season>(); ;
+            List<SeasonDTO> results = new List<SeasonDTO>(); ;
             var seasons = context.Seasons.AsQueryable();
             results.AddRange(seasons);
             return results;
         }
     }
 
-    public List<Show> GetShows()
+    public List<ShowDTO> GetShows()
     {
         using (var context = new DataContext())
         {
-            List<Show> results = new List<Show>(); ;
+            List<ShowDTO> results = new List<ShowDTO>(); ;
             var shows = context.Shows.AsQueryable();
             results.AddRange(shows);
             return results;
         }
     }
 
-    public List<ShowEpisode> GetShowEpisodes()
+    public List<ShowEpisodeDTO> GetShowEpisodes()
     {
         using (var context = new DataContext())
         {
-            List<ShowEpisode> results = new List<ShowEpisode>(); ;
+            List<ShowEpisodeDTO> results = new List<ShowEpisodeDTO>(); ;
             var showEpisodes = context.ShowEpisodes.AsQueryable();
             results.AddRange(showEpisodes);
             return results;
         }
     }
 
-    public List<ShowGenre> GetShowGenres()
+    public List<ShowGenreDTO> GetShowGenres()
     {
         using (var context = new DataContext())
         {
-            List<ShowGenre> results = new List<ShowGenre>(); ;
+            List<ShowGenreDTO> results = new List<ShowGenreDTO>(); ;
             var showGenres = context.ShowGenres.AsQueryable();
             results.AddRange(showGenres);
             return results;
         }
     }
 
-    public List<ShowNetwork> GetShowNetworks()
+    public List<ShowNetworkDTO> GetShowNetworks()
     {
         using (var context = new DataContext())
         {
-            List<ShowNetwork> results = new List<ShowNetwork>(); ;
+            List<ShowNetworkDTO> results = new List<ShowNetworkDTO>(); ;
             var showNetworks = context.ShowNetworks.AsQueryable();
             results.AddRange(showNetworks);
             return results;
         }
     }
 
-    public List<ShowSeason> GetShowSeasons()
+    public List<ShowSeasonDTO> GetShowSeasons()
     {
         using (var context = new DataContext())
         {
-            List<ShowSeason> results = new List<ShowSeason>(); ;
+            List<ShowSeasonDTO> results = new List<ShowSeasonDTO>(); ;
             var showSeasons = context.ShowSeasons.AsQueryable();
             results.AddRange(showSeasons);
             return results;
+        }
+    }
+
+    public List<UserDTO> GetUsers()
+    {
+        using (var context = new DataContext())
+        {
+            List<UserDTO> results = new List<UserDTO>(); ;
+            var users = context.Users.AsQueryable();
+            results.AddRange(users);
+            return results;
+        }
+    }
+
+    public List<UserShowDTO> GetUserShows()
+    {
+        using (var context = new DataContext())
+        {
+            List<UserShowDTO> results = new List<UserShowDTO>(); ;
+            var userShows = context.UserShows.AsQueryable();
+            results.AddRange(userShows);
+            return results;
+        }
+    }
+
+    public List<UserShowEpisodeDTO> GetUserShowEpisodes()
+    {
+        using (var context = new DataContext())
+        {
+            List<UserShowEpisodeDTO> results = new List<UserShowEpisodeDTO>(); ;
+            var userShowEpisodes = context.UserShowEpisodes.AsQueryable();
+            results.AddRange(userShowEpisodes);
+            return results;
+        }
+    }
+
+    public void RegisterUser(UserDTO user)
+    {
+        using (var context = new DataContext())
+        {
+            context.Add(user);
+            context.SaveChanges();
+        }
+    }
+
+    public void ToggleShow(UserShowDTO userShow)
+    {
+        using (var context = new DataContext())
+        {
+            var availableUserShow = context.UserShows.Where(u => u.UserName == userShow.UserName
+                                        && u.ShowId == userShow.ShowId).FirstOrDefault();
+            if (availableUserShow != null)
+                context.Remove(availableUserShow);
+            else
+                context.Add(userShow);
+            context.SaveChanges();
+        }
+    }
+
+    public void ToggleShowEpisode(UserShowEpisodeDTO userShowEpisode)
+    {
+        using (var context = new DataContext())
+        {
+            var availableUserShowEpisode = context.UserShowEpisodes.Where(u => u.UserName == userShowEpisode.UserName
+                                               && u.ShowId == userShowEpisode.ShowId
+                                               && u.SeasonNumber == userShowEpisode.SeasonNumber
+                                               && u.EpisodeNumber == userShowEpisode.EpisodeNumber).FirstOrDefault();
+            if (availableUserShowEpisode != null)
+                context.Remove(availableUserShowEpisode);
+            else
+                context.Add(userShowEpisode);
+            context.SaveChanges();
         }
     }
 }

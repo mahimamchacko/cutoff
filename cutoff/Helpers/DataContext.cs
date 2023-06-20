@@ -16,30 +16,36 @@ public partial class DataContext : DbContext
     {
     }
 
-    public virtual DbSet<Episode> Episodes { get; set; }
+    public virtual DbSet<EpisodeDTO> Episodes { get; set; }
 
-    public virtual DbSet<Genre> Genres { get; set; }
+    public virtual DbSet<GenreDTO> Genres { get; set; }
 
-    public virtual DbSet<Network> Networks { get; set; }
+    public virtual DbSet<NetworkDTO> Networks { get; set; }
 
-    public virtual DbSet<Season> Seasons { get; set; }
+    public virtual DbSet<SeasonDTO> Seasons { get; set; }
 
-    public virtual DbSet<Show> Shows { get; set; }
+    public virtual DbSet<ShowDTO> Shows { get; set; }
 
-    public virtual DbSet<ShowEpisode> ShowEpisodes { get; set; }
+    public virtual DbSet<ShowEpisodeDTO> ShowEpisodes { get; set; }
 
-    public virtual DbSet<ShowGenre> ShowGenres { get; set; }
+    public virtual DbSet<ShowGenreDTO> ShowGenres { get; set; }
 
-    public virtual DbSet<ShowNetwork> ShowNetworks { get; set; }
+    public virtual DbSet<ShowNetworkDTO> ShowNetworks { get; set; }
 
-    public virtual DbSet<ShowSeason> ShowSeasons { get; set; }
+    public virtual DbSet<ShowSeasonDTO> ShowSeasons { get; set; }
+
+    public virtual DbSet<UserDTO> Users { get; set; }
+
+    public virtual DbSet<UserShowDTO> UserShows { get; set; }
+
+    public virtual DbSet<UserShowEpisodeDTO> UserShowEpisodes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlite("Data Source=./Database/cutoff.db;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Episode>(entity =>
+        modelBuilder.Entity<EpisodeDTO>(entity =>
         {
             entity.HasKey(e => e.EpisodeNumber);
 
@@ -50,8 +56,10 @@ public partial class DataContext : DbContext
                 .HasColumnType("INT");
         });
 
-        modelBuilder.Entity<Genre>(entity =>
+        modelBuilder.Entity<GenreDTO>(entity =>
         {
+            entity.HasKey(e => e.GenreId);
+
             entity.ToTable("Genre");
 
             entity.Property(e => e.GenreId)
@@ -61,8 +69,10 @@ public partial class DataContext : DbContext
             entity.Property(e => e.GenreName).HasColumnType("VARCHAR(100)");
         });
 
-        modelBuilder.Entity<Network>(entity =>
+        modelBuilder.Entity<NetworkDTO>(entity =>
         {
+            entity.HasKey(e => e.NetworkId);
+
             entity.ToTable("Network");
 
             entity.Property(e => e.NetworkId)
@@ -72,7 +82,7 @@ public partial class DataContext : DbContext
             entity.Property(e => e.NetworkName).HasColumnType("VARCHAR(150)");
         });
 
-        modelBuilder.Entity<Season>(entity =>
+        modelBuilder.Entity<SeasonDTO>(entity =>
         {
             entity.HasKey(e => e.SeasonNumber);
 
@@ -83,8 +93,10 @@ public partial class DataContext : DbContext
                 .HasColumnType("INT");
         });
 
-        modelBuilder.Entity<Show>(entity =>
+        modelBuilder.Entity<ShowDTO>(entity =>
         {
+            entity.HasKey(e => e.ShowId);
+
             entity.ToTable("Show");
 
             entity.Property(e => e.ShowId)
@@ -94,7 +106,7 @@ public partial class DataContext : DbContext
             entity.Property(e => e.ShowName).HasColumnType("VARCHAR(200)");
         });
 
-        modelBuilder.Entity<ShowEpisode>(entity =>
+        modelBuilder.Entity<ShowEpisodeDTO>(entity =>
         {
             entity.HasKey(e => new { e.ShowId, e.SeasonNumber, e.EpisodeNumber });
 
@@ -108,7 +120,7 @@ public partial class DataContext : DbContext
             entity.Property(e => e.EpisodeName).HasColumnType("VARCHAR(300)");
         });
 
-        modelBuilder.Entity<ShowGenre>(entity =>
+        modelBuilder.Entity<ShowGenreDTO>(entity =>
         {
             entity.HasKey(e => new { e.ShowId, e.GenreId });
 
@@ -123,7 +135,7 @@ public partial class DataContext : DbContext
                 .HasColumnName("GenreID");
         });
 
-        modelBuilder.Entity<ShowNetwork>(entity =>
+        modelBuilder.Entity<ShowNetworkDTO>(entity =>
         {
             entity.HasKey(e => new { e.ShowId, e.NetworkId });
 
@@ -138,7 +150,7 @@ public partial class DataContext : DbContext
                 .HasColumnName("NetworkID");
         });
 
-        modelBuilder.Entity<ShowSeason>(entity =>
+        modelBuilder.Entity<ShowSeasonDTO>(entity =>
         {
             entity.HasKey(e => new { e.ShowId, e.SeasonNumber });
 
@@ -148,6 +160,45 @@ public partial class DataContext : DbContext
                 .HasColumnType("INT")
                 .HasColumnName("ShowID");
             entity.Property(e => e.SeasonNumber).HasColumnType("INT");
+        });
+
+        modelBuilder.Entity<UserDTO>(entity =>
+        {
+            entity.HasKey(e => e.UserName);
+
+            entity.ToTable("User");
+
+            entity.Property(e => e.UserName).HasColumnType("VARCHAR(30)");
+            entity.Property(e => e.UserFirst).HasColumnType("VARCHAR(50)");
+            entity.Property(e => e.UserLast).HasColumnType("VARCHAR(50)");
+            entity.Property(e => e.UserEmail).HasColumnType("VARCHAR(65)");
+            entity.Property(e => e.UserPassword).HasColumnType("VARCHAR(60)");
+        });
+
+        modelBuilder.Entity<UserShowDTO>(entity =>
+        {
+            entity.HasKey(e => new { e.UserName, e.ShowId });
+
+            entity.ToTable("UserShow");
+
+            entity.Property(e => e.UserName).HasColumnType("VARCHAR(30)");
+            entity.Property(e => e.ShowId)
+                .HasColumnType("INT")
+                .HasColumnName("ShowID");
+        });
+
+        modelBuilder.Entity<UserShowEpisodeDTO>(entity =>
+        {
+            entity.HasKey(e => new { e.UserName, e.ShowId, e.SeasonNumber, e.EpisodeNumber });
+
+            entity.ToTable("UserShowEpisode");
+
+            entity.Property(e => e.UserName).HasColumnType("VARCHAR(30)");
+            entity.Property(e => e.ShowId)
+                .HasColumnType("INT")
+                .HasColumnName("ShowID");
+            entity.Property(e => e.SeasonNumber).HasColumnType("INT");
+            entity.Property(e => e.EpisodeNumber).HasColumnType("INT");
         });
 
         OnModelCreatingPartial(modelBuilder);

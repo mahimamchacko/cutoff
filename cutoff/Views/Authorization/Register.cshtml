@@ -1,0 +1,125 @@
+﻿@model cutoff.Models.UserRegisterVM
+@{
+    ViewData["Title"] = "Cutoff - Register";
+}
+
+<form class="border rounded mx-auto mb-3 p-3 col-sm-12 col-md-8 col-lg-6 needs-validation" action="@Url.Action("RegisterUser", "Authorization")" method="post" novalidate>
+    <h1>Cutoff</h1>
+    <div class="row">
+        <div class="col-md-6 mb-3 position-relative">
+            <input type="text" class="form-control" id="firstName" maxlength="50" placeholder="First name" asp-for="UserFirst" required>
+            <div class="valid-feedback">
+                Great!
+            </div>
+            <div class="invalid-feedback">
+                Please enter your first name.
+            </div>
+        </div>
+        <div class="col-md-6 mb-3 position-relative">
+            <input type="text" class="form-control" id="lastName" maxlength="50" placeholder="Last name" asp-for="UserLast" required>
+            <div class="valid-feedback">
+                Great!
+            </div>
+            <div class="invalid-feedback">
+                Please enter your last name.
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mb-3 position-relative">
+            <input type="email" class="form-control" id="email" oninput="checkEmail(this)" maxlength="65" placeholder="Email" asp-for="UserEmail" required>
+            <div class="valid-feedback">
+                Great!
+            </div>
+            <div class="invalid-feedback">
+                Please enter your email. The email must not already exist with an account.
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3 position-relative">
+            <div class="input-group has-validation">
+                <span class="input-group-text" id="usernamePrepend">&#64;</span>
+                <input type="text" class="form-control" id="username" oninput="checkUsername(this)" minlength="6" maxlength="30" aria-describedby="usernamePrepend" placeholder="Username" asp-for="UserName" required>
+                <div class="valid-feedback">
+                    Great!
+                </div>
+                <div class="invalid-feedback">
+                    Please enter a unique and valid username.
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3 position-relative">
+            <input type="password" id="password" class="form-control" minlength="10" maxlength="60" placeholder="Password" asp-for="UserPassword" required>
+            <div class="valid-feedback">
+                Great!
+            </div>
+            <div class="invalid-feedback">
+                Please enter a secure password.
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+    </div>
+</form>
+
+<div class="border rounded mx-auto p-3 col-sm-12 col-md-8 col-lg-6">
+    <a asp-area="" asp-controller="Authorization" asp-action="Index">
+        <button class="btn btn-primary">Login</button>
+    </a>
+</div>
+
+<script>
+    $(function () {
+        'use strict'
+
+        var forms = document.querySelectorAll('.needs-validation');
+
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    });
+
+    function checkEmail(input) {
+        var email = input.value;
+        $.ajax({
+            url: "@Url.Action("CheckUserEmail", "Home")",
+            type: "GET",
+            data: { userEmail: email },
+            success: function (result) {
+                if (result) {
+                    input.setCustomValidity("");
+                } else {
+                    input.setCustomValidity("Please enter your email. The email must not already exist with an account.");
+                }
+            }
+        })
+    }
+
+    function checkUsername(input) {
+        var username = input.value;
+        $.ajax({
+            url: "@Url.Action("CheckUserName", "Home")",
+            type: "GET",
+            data: { userName: username },
+            success: function (result) {
+                if (result) {
+                    input.setCustomValidity("");
+                } else {
+                    input.setCustomValidity("Please enter a unique and valid username.");
+                }
+            }
+        })
+    }
+</script>
