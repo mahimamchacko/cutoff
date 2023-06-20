@@ -33,6 +33,6 @@ public interface IDataAccessor
 
     public void ToggleShow(UserShowDTO userShow);
 
-    //public void ToggleShowEpisode(UserShowEpisodeDTO userShowEpisode);
+    public void ToggleShowEpisode(UserShowEpisodeDTO userShowEpisode);
 }
 
