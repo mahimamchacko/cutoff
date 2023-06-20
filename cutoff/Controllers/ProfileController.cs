@@ -18,7 +18,8 @@ namespace cutoff.Controllers
         {
             if (HttpContext.Session.GetString("UserName") != null)
             {
-                UserDTO user = _dataAccessor.GetUsers().Where(u => u.UserName == HttpContext.Session.GetString("UserName")).FirstOrDefault();
+                string userName = HttpContext.Session.GetString("UserName") ?? "";
+                UserDTO user = _dataAccessor.GetUsers().Where(u => u.UserName == userName).FirstOrDefault();
                 UserVM profile = new UserVM
                 {
                     UserEmail = user.UserEmail,

@@ -25,6 +25,14 @@ public interface IDataAccessor
 
     public List<UserDTO> GetUsers();
 
+    public List<UserShowDTO> GetUserShows();
+
+    public List<UserShowEpisodeDTO> GetUserShowEpisodes();
+
     public void RegisterUser(UserDTO user);
+
+    public void ToggleShow(UserShowDTO userShow);
+
+    //public void ToggleShowEpisode(UserShowEpisodeDTO userShowEpisode);
 }
 
