@@ -119,11 +119,63 @@ public class DataAccessor : IDataAccessor
         }
     }
 
+    public List<UserShowDTO> GetUserShows()
+    {
+        using (var context = new DataContext())
+        {
+            List<UserShowDTO> results = new List<UserShowDTO>(); ;
+            var userShows = context.UserShows.AsQueryable();
+            results.AddRange(userShows);
+            return results;
+        }
+    }
+
+    public List<UserShowEpisodeDTO> GetUserShowEpisodes()
+    {
+        using (var context = new DataContext())
+        {
+            List<UserShowEpisodeDTO> results = new List<UserShowEpisodeDTO>(); ;
+            var userShowEpisodes = context.UserShowEpisodes.AsQueryable();
+            results.AddRange(userShowEpisodes);
+            return results;
+        }
+    }
+
     public void RegisterUser(UserDTO user)
     {
         using (var context = new DataContext())
         {
             context.Add(user);
+            context.SaveChanges();
+        }
+    }
+
+    public void ToggleShow(UserShowDTO userShow)
+    {
+        using (var context = new DataContext())
+        {
+            var availableUserShow = context.UserShows.Where(u => u.UserName == userShow.UserName
+                                        && u.ShowId == userShow.ShowId).FirstOrDefault();
+            if (availableUserShow != null)
+                context.Remove(availableUserShow);
+            else
+                context.Add(userShow);
+            context.SaveChanges();
+        }
+    }
+
+    public void ToggleShowEpisode(UserShowEpisodeDTO userShowEpisode)
+    {
+        using (var context = new DataContext())
+        {
+            var availableUserShowEpisode = context.UserShowEpisodes.Where(u => u.UserName == userShowEpisode.UserName
+                                               && u.ShowId == userShowEpisode.ShowId
+                                               && u.SeasonNumber == userShowEpisode.SeasonNumber
+                                               && u.EpisodeNumber == userShowEpisode.EpisodeNumber).FirstOrDefault();
+            if (availableUserShowEpisode != null)
+                context.Remove(availableUserShowEpisode);
+            else
+                context.Add(userShowEpisode);
             context.SaveChanges();
         }
     }

@@ -1,4 +1,4 @@
-﻿@model cutoff.Models.ShowMovalVM
+﻿@model cutoff.Models.ShowModalVM
 
 @{
     Layout = null;
@@ -15,7 +15,7 @@
             <div id="networks" class="mb-2">
                 @foreach (var network in show.Networks!)
                 {
-                    <span id="@network.NetworkId" class="badge bg-primary">@network.NetworkName</span>
+                    <span id="@network.NetworkId" class="badge bg-primary fs-6">@network.NetworkName</span>
                 }
             </div>
             <div class="accordion">
@@ -40,8 +40,8 @@
                                             <p class="m-0 text-muted" style="font-size: 0.75rem;">@episode.EpisodeDate.ToString("dddd MMMM dd, yyyy")</p>
                                         </div>
                                         <div class="d-flex align-items-center">
-                                            <input type="checkbox" id="@string.Format("season{0}Episode{1}Checkbox", season.SeasonNumber, episode.EpisodeNumber)" class="btn-check" autocomplete="off" />
-                                            <label class="btn btn-small btn-outline-primary" for="@string.Format("season{0}Episode{1}Checkbox", season.SeasonNumber, episode.EpisodeNumber)">_</label>
+                                            <input type="checkbox" id="@string.Format("season{0}Episode{1}Watch", season.SeasonNumber, episode.EpisodeNumber)" class="btn-check" checked="@episode.UserWatch" autocomplete="off" />
+                                            <label id="@string.Format("season{0}Episode{1}WatchLabel", season.SeasonNumber, episode.EpisodeNumber)" class="btn btn-small btn-outline-primary btn-watch" for="@string.Format("season{0}Episode{1}Watch", season.SeasonNumber, episode.EpisodeNumber)">&#x2713</label>
                                         </div>
                                     </div>
                                 }
@@ -53,6 +53,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(".btn-watch").click(function () {
+        var showId = @show.ShowId;
+        var text = String(this.id).split(/(\d+)/);
+        var seasonNumber = text[1];
+        var episodeNumber = text[3];
+        var data = { "showId": showId, "seasonNumber": seasonNumber, "episodeNumber": episodeNumber };
+        var link = '@Url.Action("ToggleShowEpisode", "Show")';
+        $.ajax({
+            type: "POST",
+            url: link,
+            data: data,
+        });
+    });
+</script>
 
 <style>
     .accordion-body > div {

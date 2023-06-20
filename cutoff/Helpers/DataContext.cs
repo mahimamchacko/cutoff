@@ -36,6 +36,10 @@ public partial class DataContext : DbContext
 
     public virtual DbSet<UserDTO> Users { get; set; }
 
+    public virtual DbSet<UserShowDTO> UserShows { get; set; }
+
+    public virtual DbSet<UserShowEpisodeDTO> UserShowEpisodes { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlite("Data Source=./Database/cutoff.db;");
 
@@ -169,6 +173,32 @@ public partial class DataContext : DbContext
             entity.Property(e => e.UserLast).HasColumnType("VARCHAR(50)");
             entity.Property(e => e.UserEmail).HasColumnType("VARCHAR(65)");
             entity.Property(e => e.UserPassword).HasColumnType("VARCHAR(60)");
+        });
+
+        modelBuilder.Entity<UserShowDTO>(entity =>
+        {
+            entity.HasKey(e => new { e.UserName, e.ShowId });
+
+            entity.ToTable("UserShow");
+
+            entity.Property(e => e.UserName).HasColumnType("VARCHAR(30)");
+            entity.Property(e => e.ShowId)
+                .HasColumnType("INT")
+                .HasColumnName("ShowID");
+        });
+
+        modelBuilder.Entity<UserShowEpisodeDTO>(entity =>
+        {
+            entity.HasKey(e => new { e.UserName, e.ShowId, e.SeasonNumber, e.EpisodeNumber });
+
+            entity.ToTable("UserShowEpisode");
+
+            entity.Property(e => e.UserName).HasColumnType("VARCHAR(30)");
+            entity.Property(e => e.ShowId)
+                .HasColumnType("INT")
+                .HasColumnName("ShowID");
+            entity.Property(e => e.SeasonNumber).HasColumnType("INT");
+            entity.Property(e => e.EpisodeNumber).HasColumnType("INT");
         });
 
         OnModelCreatingPartial(modelBuilder);
