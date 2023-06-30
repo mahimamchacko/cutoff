@@ -1,55 +1,75 @@
-﻿@model cutoff.Models.ShowGridVM
+﻿@model cutoff.Models.ShowIndexVM
 @{
     ViewData["Title"] = "Cutoff Shows";
 }
 
-<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2">
-    @foreach (var show in Model.Shows)
-    {
-        <div>
-            <img src="" class="card-img-top" alt="" />
-            <div class="card h-100 bg-light text-secondary">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 id="@show.ShowId" class="card-title text-dark mb-0">@show.ShowName</h5>
-                        <div class="btn-group" role="group">
-                            <input type="checkbox" class="btn-check" id="@string.Format("{0}Watch", show.ShowId)" checked="@show.UserWatch" autocomplete="off">
-                            <label id="@string.Format("{0}WatchLabel", show.ShowId)" class="btn btn-small btn-outline-primary btn-watch" for="@string.Format("{0}Watch", show.ShowId)">&#x2713</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-
-    <div id="showModal" class="modal fade" tabindex="-1" data-backdrop="static"></div>
+<div id="filter" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2">
+    <div class="form-floating">
+        <select id="network" class="form-select">
+            <option value="0" selected>All</option>
+            @foreach (var network in Model.Networks)
+            {
+                <option value="@network.NetworkId">@network.NetworkName</option>
+            }
+        </select>
+        <label for="network">Network</label>
+    </div>
+    <div class="form-floating">
+        <select id="genre" class="form-select">
+            <option value="0" selected>All</option>
+            @foreach (var genre in Model.Genres)
+            {
+                <option value="@genre.GenreId">@genre.GenreName</option>
+            }
+        </select>
+        <label for="genre">Genre</label>
+    </div>
+    <div class="form-floating">
+        <select id="language" class="form-select">
+            <option value="0" selected>All</option>
+            @foreach (var language in Model.Languages)
+            {
+                <option value="@language.LanguageId">@language.LanguageName</option>
+            }
+        </select>
+        <label for="language">Language</label>
+    </div>
+    <div class="form-floating">
+        <select id="star" class="form-select">
+            <option value="0" selected>All</option>
+            @foreach (var star in Model.Languages)
+            {
+                <option value="@star.LanguageId">@star.LanguageName</option>
+            }
+        </select>
+        <label for="star">Star</label>
+    </div>
 </div>
 
+<div id="showGrid" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2"></div>
+
+<div id="showModal" class="modal fade" tabindex="-1" data-backdrop="static"></div>
+
 <script type="text/javascript">
-    $(".card-title").click(function () {
-        var data = { "showId": this.id };
-        var link = '@Url.Action("ShowModal", "Show")';
+    $(".form-select").change(function () {
+        var networkDropdown = document.getElementById("network").value;
+        var genreDropdown = document.getElementById("genre").value;
+        var languageDropdown = document.getElementById("language").value;
+
+        var data = { "networkId": networkDropdown, "genreId": genreDropdown, "languageId": languageDropdown };
+        var link = '@Url.Action("ShowGrid", "Show")';
         $.ajax({
             type: "POST",
             url: link,
             data: data,
             success: function (response) {
-                $("#showModal").html(response);
-                var modalElement = document.getElementById("showModal");
-                var modal = new bootstrap.Modal(modalElement);
-                modal.show();
+                $("#showGrid").html(response);
             }
         });
     });
 
-    $(".btn-watch").click(function () {
-        var showId = String(this.id).replace("WatchLabel", "");
-        var data = { "showId": showId };
-        var link = '@Url.Action("ToggleShow", "Show")';
-        $.ajax({
-            type: "POST",
-            url: link,
-            data: data,
-        });
+    var link = '@Url.Action("ShowGrid", "Show")';
+    $("#showGrid").load(link, function (response) {
+        $("#showGrid").html(response);
     });
 </script>

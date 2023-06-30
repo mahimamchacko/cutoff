@@ -6,11 +6,11 @@ namespace cutoff.Models;
 
 public class ShowGridVM
 {
-	public List<Show> Shows { get; set; }
+    public List<Show> Shows { get; set; }
 
-	public ShowGridVM(DataAccessor dataAccessor, ShowService showService, string userName)
+	public ShowGridVM(DataAccessor dataAccessor, ShowService showService, string userName, int networkId, int genreId, int languageId)
 	{
-		Shows = showService.BuildShowGrid(userName);
+		Shows = showService.BuildShowGrid(userName, networkId, genreId, languageId);
 	}
 }
 

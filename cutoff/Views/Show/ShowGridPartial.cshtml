@@ -1,0 +1,52 @@
+﻿@model cutoff.Models.ShowGridVM
+
+@{
+    Layout = null;
+}
+
+@foreach (var show in Model.Shows)
+{
+    <div>
+        <img src="" class="card-img-top" alt="" />
+        <div class="card h-100 bg-light text-secondary">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 id="@show.ShowId" class="card-title text-dark mb-0">@show.ShowName</h5>
+                    <div class="btn-group" role="group">
+                        <input type="checkbox" class="btn-check" id="@string.Format("{0}Watch", show.ShowId)" checked="@show.UserWatch" autocomplete="off">
+                        <label id="@string.Format("{0}WatchLabel", show.ShowId)" class="btn btn-small btn-outline-primary btn-watch" for="@string.Format("{0}Watch", show.ShowId)">&#x2713</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $(".card-title").click(function () {
+        var data = { "showId": this.id };
+        var link = '@Url.Action("ShowModal", "Show")';
+        $.ajax({
+            type: "POST",
+            url: link,
+            data: data,
+            success: function (response) {
+                $("#showModal").html(response);
+                var modalElement = document.getElementById("showModal");
+                var modal = new bootstrap.Modal(modalElement);
+                modal.show();
+            }
+        });
+    });
+
+    $(".btn-watch").click(function () {
+        var showId = String(this.id).replace("WatchLabel", "");
+        var data = { "showId": showId };
+        var link = '@Url.Action("ToggleShow", "Show")';
+        $.ajax({
+            type: "POST",
+            url: link,
+            data: data,
+        });
+    });
+</script>

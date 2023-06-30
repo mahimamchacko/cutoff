@@ -28,7 +28,9 @@ public class Startup
 
         services.AddScoped<DataAccessor>();
         services.AddScoped<ShowService>();
-	}
+        services.AddScoped<NetworkService>();
+        services.AddScoped<GenreService>();
+    }
 
 	public void Configure(WebApplication app, IWebHostEnvironment env)
 	{
