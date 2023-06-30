@@ -10,7 +10,9 @@ public class Show
 
     public bool UserWatch { get; set; }
 
-    public List<NetworkDTO>? Networks { get; set; }
+    public List<Network>? Networks { get; set; }
+
+    public List<Genre>? Genres { get; set; }
 
     public List<ShowSeasonDTO>? Seasons { get; set; }
 

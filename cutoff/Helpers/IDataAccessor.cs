@@ -9,6 +9,8 @@ public interface IDataAccessor
 
     public List<GenreDTO> GetGenres();
 
+    public List<LanguageDTO> GetLanguages();
+
     public List<NetworkDTO> GetNetworks();
 
     public List<SeasonDTO> GetSeasons();

@@ -20,6 +20,8 @@ public partial class DataContext : DbContext
 
     public virtual DbSet<GenreDTO> Genres { get; set; }
 
+    public virtual DbSet<LanguageDTO> Languages { get; set; }
+
     public virtual DbSet<NetworkDTO> Networks { get; set; }
 
     public virtual DbSet<SeasonDTO> Seasons { get; set; }
@@ -69,6 +71,19 @@ public partial class DataContext : DbContext
             entity.Property(e => e.GenreName).HasColumnType("VARCHAR(100)");
         });
 
+        modelBuilder.Entity<LanguageDTO>(entity =>
+        {
+            entity.HasKey(e => e.LanguageId);
+
+            entity.ToTable("Language");
+
+            entity.Property(e => e.LanguageId)
+                .ValueGeneratedNever()
+                .HasColumnType("INT")
+                .HasColumnName("LanguageID");
+            entity.Property(e => e.LanguageName).HasColumnType("VARCHAR(50)");
+        });
+
         modelBuilder.Entity<NetworkDTO>(entity =>
         {
             entity.HasKey(e => e.NetworkId);
@@ -104,6 +119,10 @@ public partial class DataContext : DbContext
                 .HasColumnType("INT")
                 .HasColumnName("ShowID");
             entity.Property(e => e.ShowName).HasColumnType("VARCHAR(200)");
+            entity.Property(e => e.LanguageId)
+                .ValueGeneratedNever()
+                .HasColumnType("INT")
+                .HasColumnName("LanguageID");
         });
 
         modelBuilder.Entity<ShowEpisodeDTO>(entity =>

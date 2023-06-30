@@ -12,11 +12,17 @@ public class ShowController : Controller
 {
     private readonly DataAccessor _dataAccessor;
     private readonly ShowService _showService;
+    private readonly NetworkService _networkService;
+    private readonly GenreService _genreService;
+    private readonly LanguageService _languageService;
 
-    public ShowController(DataAccessor dataAccessor, ShowService showService)
+    public ShowController(DataAccessor dataAccessor, ShowService showService, NetworkService networkService, GenreService genreService, LanguageService languageService)
     {
         _dataAccessor = dataAccessor;
         _showService = showService;
+        _networkService = networkService;
+        _genreService = genreService;
+        _languageService = languageService;
     }
 
     public IActionResult Index()
@@ -24,8 +30,19 @@ public class ShowController : Controller
         if (HttpContext.Session.GetString("UserName") != null)
         {
             string userName = HttpContext.Session.GetString("UserName") ?? "";
-            var model = new ShowGridVM(_dataAccessor, _showService, userName);
+            var model = new ShowIndexVM(_dataAccessor, _networkService, _genreService, _languageService, userName);
             return View(model);
+        }
+        return RedirectToAction("Index", "Authorization");
+    }
+
+    public IActionResult ShowGrid(int networkId, int genreId, int languageId)
+    {
+        if (HttpContext.Session.GetString("UserName") != null)
+        {
+            string userName = HttpContext.Session.GetString("UserName") ?? "";
+            var model = new ShowGridVM(_dataAccessor, _showService, userName, networkId, genreId, languageId);
+            return PartialView("ShowGridPartial", model);
         }
         return RedirectToAction("Index", "Authorization");
     }

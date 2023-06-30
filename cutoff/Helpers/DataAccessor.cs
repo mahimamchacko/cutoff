@@ -31,6 +31,17 @@ public class DataAccessor : IDataAccessor
         }
     }
 
+    public List<LanguageDTO> GetLanguages()
+    {
+        using (var context = new DataContext())
+        {
+            List<LanguageDTO> results = new List<LanguageDTO>(); ;
+            var languages = context.Languages.AsQueryable();
+            results.AddRange(languages);
+            return results;
+        }
+    }
+
     public List<NetworkDTO> GetNetworks()
     {
         using (var context = new DataContext())

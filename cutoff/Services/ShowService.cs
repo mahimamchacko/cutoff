@@ -7,26 +7,39 @@ namespace cutoff.Services;
 public class ShowService
 {
     private readonly DataAccessor _dataAccessor;
+    private readonly NetworkService _networkService;
+    private readonly GenreService _genreService;
+    private readonly LanguageService _languageService;
 
-    public ShowService(DataAccessor dataAccessor)
+    public ShowService(DataAccessor dataAccessor, NetworkService networkService, GenreService genreService, LanguageService languageService)
 	{
         _dataAccessor = dataAccessor;
+        _networkService = networkService;
+        _genreService = genreService;
+        _languageService = languageService;
     }
 
-    public List<Show> BuildShowGrid(string userName)
+    public List<Show> BuildShowGrid(string userName, int networkId, int genreId, int languageId)
     {
         List<Show> output = new List<Show>();
 
-        var shows = _dataAccessor.GetShows();
-        var networks = _dataAccessor.GetNetworks();
+        var shows = _dataAccessor.GetShows().Where(s => (languageId == 0 || s.LanguageId == languageId)).OrderBy(x => x.ShowName);
+        var networks = _dataAccessor.GetNetworks().OrderBy(n => n.NetworkName);
         var showNetworks = _dataAccessor.GetShowNetworks();
+        var genres = _dataAccessor.GetGenres();
+        var showGenres = _dataAccessor.GetShowGenres();
         var userShows = _dataAccessor.GetUserShows().Where(u => u.UserName == userName);
-        var availableShows = shows.OrderBy(s => s.ShowName);
 
-        foreach (var show in availableShows)
+        foreach (var show in shows)
         {
-            var availableNetworks = showNetworks.Where(s => s.ShowId == show.ShowId).Select(n => n.NetworkId);
             var userWatch = userShows.Where(s => s.ShowId == show.ShowId).FirstOrDefault();
+
+            var availableNetworks = showNetworks.Where(s => s.ShowId == show.ShowId).Select(n => n.NetworkId);
+            var specificNetworks = networks.Where(n => availableNetworks.Contains(n.NetworkId)).ToList();
+
+            var availableGenres = showGenres.Where(s => s.ShowId == show.ShowId).Select(g => g.GenreId);
+            var specificGenres = genres.Where(g => availableGenres.Contains(g.GenreId)).ToList();
+
             output.Add(new Show
             {
                 ShowId = show.ShowId,
@@ -34,10 +47,13 @@ public class ShowService
                 UserWatch = (userWatch != null)
                                 ? true
                                 : false,
-                Networks = networks.Where(n => availableNetworks.Contains(n.NetworkId)).ToList()
+                Networks = _networkService.ConvertToNetwork(specificNetworks),
+                Genres = _genreService.ConvertToGenre(specificGenres)
             });
         }
 
+        output = output.Where(s => (networkId == 0 || s.Networks?.Where(n => n.NetworkId == networkId).Count() > 0)
+                                   && (genreId == 0 || s.Genres?.Where(g => g.GenreId == genreId).Count() > 0)).ToList();
         return output;
     }
 
@@ -54,11 +70,12 @@ public class ShowService
 
         var show = shows.Where(s => s.ShowId == showId).First();
         var availableNetworks = showNetworks.Where(s => s.ShowId == show.ShowId).Select(n => n.NetworkId);
+        var specificNetworks = networks.Where(n => availableNetworks.Contains(n.NetworkId)).ToList();
         var availableShowEpisodes = showEpisodes.Where(s => s.ShowId == showId).OrderBy(x => x.SeasonNumber).ThenBy(y => y.EpisodeNumber);
 
         output.ShowId = showId;
         output.ShowName = show.ShowName;
-        output.Networks = networks.Where(n => availableNetworks.Contains(n.NetworkId)).ToList();
+        output.Networks = _networkService.ConvertToNetwork(specificNetworks);
         output.Seasons = showSeasons.Where(s => s.ShowId == showId).OrderBy(x => x.SeasonNumber).ToList();
         output.Episodes = new List<ShowEpisode>();
 
