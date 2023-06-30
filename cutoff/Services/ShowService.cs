@@ -9,12 +9,14 @@ public class ShowService
     private readonly DataAccessor _dataAccessor;
     private readonly NetworkService _networkService;
     private readonly GenreService _genreService;
+    private readonly LanguageService _languageService;
 
-    public ShowService(DataAccessor dataAccessor, NetworkService networkService, GenreService genreService)
+    public ShowService(DataAccessor dataAccessor, NetworkService networkService, GenreService genreService, LanguageService languageService)
 	{
         _dataAccessor = dataAccessor;
         _networkService = networkService;
         _genreService = genreService;
+        _languageService = languageService;
     }
 
     public List<Show> BuildShowGrid(string userName, int networkId, int genreId, int languageId)
